@@ -261,7 +261,7 @@ namespace ColombiasDediWatcher
                     Console.Write("----------------------------------------------------------------\n\n");
                     Console.Write("[!] THREAD " + dediSlot + ": DEDICATED WITH PID " + PID + " HAS CRASHED!\n\n[!] THREAD " + dediSlot + ": Server name: " + gethostname + "\n\n[!] THREAD " + dediSlot + ": CREATING NEW DEDICATED INSTANCE. \n\n");
                     Console.Write("----------------------------------------------------------------\n");
-
+                    File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\logs\\SQVM_Print.log"), Path.Combine(Environment.CurrentDirectory, "platform\\logs\\SQVM_Print_LASTCRASH.log"), true); 
                     File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail.cfg"), Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail_BACKUP.cfg"), true);
                     string DediCfg = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail_BACKUP.cfg"));
                     DediCfg = DediCfg.Replace("-playlistfile \"playlists_r5_patch.txt\"", "-playlistfile \"playlist_" + dediSlot + ".txt\"");
