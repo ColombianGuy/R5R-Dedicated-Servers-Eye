@@ -7,7 +7,7 @@ Management tool for R5 Reloaded dedicated servers written in C# by Colombia.
 2. It will set different playlist for each server, so you can have different gamemodes running at the same time.
 3. Change map periodically with different times and maps(todo) for each server.
 
-# Features
+# Instructions
 Optional: download the solution and compile the .exe, or you can grab it compiled from Releases.
 1. Put the .exe in the r5reloaded v2.0beta folder. This is only compatible with last dedicated version.
 2. Run
