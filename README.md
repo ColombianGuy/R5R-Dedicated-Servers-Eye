@@ -10,5 +10,6 @@ Management tool for R5 Reloaded dedicated servers written in C# by Colombia.
 # Instructions
 Optional: download the solution and compile the .exe, or you can grab it compiled from Releases.
 1. Put the .exe in the r5reloaded v2.0beta folder. This is only compatible with last dedicated version.
-2. Run
-3. Profit
+2. Create the necessary amount of playlists. They must have a consecutive name: playlists_1, playlists_2, playlists_3... 
+3. Run
+4. Profit
