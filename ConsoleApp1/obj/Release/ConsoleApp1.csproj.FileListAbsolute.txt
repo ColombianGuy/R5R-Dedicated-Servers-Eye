@@ -1,0 +1,12 @@
+C:\cppCompile\r5rdedicated\ConsoleApp1\ConsoleApp1\obj\Release\ConsoleApp1.csproj.SuggestedBindingRedirects.cache
+C:\cppCompile\r5rdedicated\ConsoleApp1\ConsoleApp1\obj\Release\ConsoleApp1.csproj.CoreCompileInputs.cache
+C:\cppCompile\r5rdedicated\ConsoleApp1\ConsoleApp1\bin\Release\R5RDedicatedWatcher.exe.config
+C:\cppCompile\r5rdedicated\ConsoleApp1\ConsoleApp1\bin\Release\R5RDedicatedWatcher.exe
+C:\cppCompile\r5rdedicated\ConsoleApp1\ConsoleApp1\bin\Release\R5RDedicatedWatcher.pdb
+C:\cppCompile\r5rdedicated\ConsoleApp1\ConsoleApp1\obj\Release\R5RDedicatedWatcher.exe
+C:\cppCompile\r5rdedicated\ConsoleApp1\ConsoleApp1\obj\Release\R5RDedicatedWatcher.pdb
+D:\r5reloaded\R5RDedicatedWatcher.exe.config
+D:\r5reloaded\R5RDedicatedWatcher.exe
+D:\r5reloaded\R5RDedicatedWatcher.pdb
+C:\cppCompile\r5rdedicated\ConsoleApp1\ConsoleApp1\obj\Release\ConsoleApp1.csproj.CopyComplete
+C:\cppCompile\r5rdedicated\ConsoleApp1\ConsoleApp1\obj\Release\ConsoleApp1.csproj.AssemblyReference.cache

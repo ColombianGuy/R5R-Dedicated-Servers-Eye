@@ -1,0 +1,9 @@
+D:\r5reloaded\R5RDedicatedWatcher.exe.config
+D:\r5reloaded\R5RDedicatedWatcher.exe
+D:\r5reloaded\R5RDedicatedWatcher.pdb
+C:\cppCompile\r5rdedicated\R5R Dedicated Servers Eye\ConsoleApp1\obj\Release\R5R Dedicated Servers Eye.csproj.AssemblyReference.cache
+C:\cppCompile\r5rdedicated\R5R Dedicated Servers Eye\ConsoleApp1\obj\Release\R5R Dedicated Servers Eye.csproj.SuggestedBindingRedirects.cache
+C:\cppCompile\r5rdedicated\R5R Dedicated Servers Eye\ConsoleApp1\obj\Release\R5R Dedicated Servers Eye.csproj.CoreCompileInputs.cache
+C:\cppCompile\r5rdedicated\R5R Dedicated Servers Eye\ConsoleApp1\obj\Release\R5R Dedicated Servers Eye.csproj.CopyComplete
+C:\cppCompile\r5rdedicated\R5R Dedicated Servers Eye\ConsoleApp1\obj\Release\R5RDedicatedWatcher.exe
+C:\cppCompile\r5rdedicated\R5R Dedicated Servers Eye\ConsoleApp1\obj\Release\R5RDedicatedWatcher.pdb
