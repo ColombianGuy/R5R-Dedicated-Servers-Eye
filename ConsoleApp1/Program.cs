@@ -215,21 +215,24 @@ namespace ColombiasDediWatcher
                 DateTime endTime = DateTime.Now.AddSeconds(ThisThreadTime);
                 int PID = 0;
                 Random getrandom = new Random();
+                
                 while (DateTime.Now < endTime)
                 {
                     PID = Convert.ToInt32(PIDS[dediSlot, 1]);
+                    Thread.Sleep(1000);
                 }
-                            Process dediToWatch = Process.GetProcessById(PID);
-                            //this is not very optimized. TODO: shuffle array
-                            string nextmap = chosenMapsArray[getrandom.Next(0, chosenMapsQt)];
-                            //this is very optimized. Colombia.
-                            string ConCommand = "changelevel " + nextmap;
-                            Console.Write("----------------------------------------------------------------\n");
-                            Console.Write("[!] CHANGING MAP! - " + nextmap);
-                            Console.Write("\n----------------------------------------------------------------\n");
-                            Keyboard.Messaging.SendStringToProcess(dediToWatch.MainWindowHandle, ConCommand);
-                            Thread.Sleep(1000);
-                            ChangeLevelThread(dediSlot);
+
+                Process dediToWatch = Process.GetProcessById(PID);
+                //this is not very optimized. TODO: shuffle array
+                string nextmap = chosenMapsArray[getrandom.Next(0, chosenMapsQt)];
+                //this is very optimized. Colombia.
+                string ConCommand = "changelevel " + nextmap;
+                Console.Write("----------------------------------------------------------------\n");
+                Console.Write("[!] CHANGING MAP! - " + nextmap);
+                Console.Write("\n----------------------------------------------------------------\n");
+                Keyboard.Messaging.SendStringToProcess(dediToWatch.MainWindowHandle, ConCommand);
+                Thread.Sleep(1000);
+                ChangeLevelThread(dediSlot);
             }
         public static void ActualWatcher(string PID)
             {
