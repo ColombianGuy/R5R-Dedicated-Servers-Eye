@@ -168,10 +168,10 @@ namespace ColombiasDediWatcher
 					File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
 					   "+hostname \"" + PIDS[i,0] + "\"" + Environment.NewLine);
 
-					//File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
-					//   "+sv_pylonvisibility 1" + Environment.NewLine);
-				
-					File.Copy(Path.Combine(Environment.CurrentDirectory, "build.txt"), Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), true);
+                File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
+                   "+sv_pylonvisibility 1" + Environment.NewLine);
+
+                File.Copy(Path.Combine(Environment.CurrentDirectory, "build.txt"), Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), true);
 					string buildfile = "SV " + (i + 1) + " - " + PIDS[i, 0];
 					File.WriteAllText(Path.Combine(Environment.CurrentDirectory, "build.txt"), buildfile);
 					Thread.Sleep(3000);
@@ -291,9 +291,9 @@ namespace ColombiasDediWatcher
 				File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
 				   "+hostname \"" + PIDS[pos, 0] + "\"" + Environment.NewLine);
 
-				//File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
-				//   "+sv_pylonvisibility 1" + Environment.NewLine);
-				File.Copy(Path.Combine(Environment.CurrentDirectory, "build.txt"), Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), true);
+                File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
+                   "+sv_pylonvisibility 1" + Environment.NewLine);
+                File.Copy(Path.Combine(Environment.CurrentDirectory, "build.txt"), Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), true);
 				string buildfile = "SV " + (dediSlot + 1) + " - " + PIDS[pos, 0];
 				File.WriteAllText(Path.Combine(Environment.CurrentDirectory, "build.txt"), buildfile);
 
