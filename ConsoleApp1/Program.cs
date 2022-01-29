@@ -168,8 +168,8 @@ namespace ColombiasDediWatcher
 					File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
 					   "+hostname \"" + PIDS[i,0] + "\"" + Environment.NewLine);
 
-					File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
-					   "+sv_pylonvisibility 1" + Environment.NewLine);
+					//File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
+					//   "+sv_pylonvisibility 1" + Environment.NewLine);
 				
 					File.Copy(Path.Combine(Environment.CurrentDirectory, "build.txt"), Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), true);
 					string buildfile = "SV " + (i + 1) + " - " + PIDS[i, 0];
@@ -188,17 +188,17 @@ namespace ColombiasDediWatcher
 				File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail_BACKUP.cfg"), Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail.cfg"), true);
 				File.Copy(Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), Path.Combine(Environment.CurrentDirectory, "build.txt"), true);
 				Process[] r5rdedis = Process.GetProcessesByName("r5apex_ds");
-			foreach (Process process in r5rdedis)
-			{ 
-				process.EnableRaisingEvents = true;
-			}
+				foreach (Process process in r5rdedis)
+				{ 
+					process.EnableRaisingEvents = true;
+				}
 				for (int i = 0; i < ServersQt; i++)
 				{
 					int dediSlot = i + 1;
-					PIDS[i, 1] = ((r5rdedis[i].Id).ToString()).Trim();
+					PIDS[i, 1] = (r5rdedis[i].Id).ToString();
 					
 					Console.Write("[+] Creating autorestart thread for dedicated " + dediSlot + " - Saved PID: " + PIDS[i, 1] + "\n");
-					Thread thread = new Thread(() => ActualWatcher(PIDS[i, 1]));
+					Thread thread = new Thread(() => ActualWatcher(PIDS[i, 1], i));
 					thread.Start();
 					Thread.Sleep(100);
 
@@ -215,7 +215,7 @@ namespace ColombiasDediWatcher
 					Console.Write("----------------------------------------------------------------\n");
 					Console.Write("[!] THREAD " + (dediSlot+1) + ": changelevel thread is activated!\n");
 					Console.Write("----------------------------------------------------------------\n");
-					int ThisThreadTime = Convert.ToInt32(PIDS[dediSlot, 3])*60; //grab the time for this playlist
+					int ThisThreadTime = (int)Convert.ToInt64(PIDS[dediSlot, 3])*60; //grab the time for this playlist
 					//int ThisThreadTime = Convert.ToInt32(PIDS[dediSlot, 3]); //grab the time for this playlist
 					DateTime endTime = DateTime.Now.AddSeconds(ThisThreadTime);
 					int PID = 0;
@@ -223,7 +223,7 @@ namespace ColombiasDediWatcher
 				
 					while (DateTime.Now < endTime)
 					{
-						PID = Convert.ToInt32(PIDS[dediSlot, 1]);
+						PID = (int)Convert.ToInt64(PIDS[dediSlot, 1]);
 						Thread.Sleep(1000);
 					}
 
@@ -239,18 +239,18 @@ namespace ColombiasDediWatcher
 					Thread.Sleep(1000);
 					ChangeLevelThread(dediSlot);
 			}
-		public static void ActualWatcher(string PID)
+		public static void ActualWatcher(string PID, int pos)
 		{
-			int PIDasInt = Convert.ToInt32(PID);
-			int pos = 0;
-			for (int i = 0; i < ServersQt; ++i)
-			{
-				if (PIDS[i, 1] == PID)
-				{
-					pos = i;
-					break;
-				}
-			}
+			int PIDasInt = (int)Convert.ToInt64(PID);
+			//int pos = 0;
+			//for (int i = 0; i < ServersQt; ++i)
+			//{
+			//	if (PIDS[i, 1] == PID)
+			//	{
+			//		pos = i;
+			//		break;
+			//	}
+			//}
 
 			int dediSlot = pos + 1;
 			string gethostname = PIDS[pos, 0];
@@ -261,8 +261,9 @@ namespace ColombiasDediWatcher
 			Thread.Sleep(1000);
 			while (!dediToWatch.HasExited)
 			{
+				dediToWatch.Refresh();
 				Console.Write("[+] THREAD " + dediSlot + ": Dedicated with PID " + PID + " is up. \n");
-				Thread.Sleep(500);
+				Thread.Sleep(2000);
 			}
 			Thread.Sleep(1000);
 
@@ -290,8 +291,8 @@ namespace ColombiasDediWatcher
 				File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
 				   "+hostname \"" + PIDS[pos, 0] + "\"" + Environment.NewLine);
 
-				File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
-				   "+sv_pylonvisibility 1" + Environment.NewLine);
+				//File.AppendAllText("platform\\cfg\\startup_dedi_retail.cfg",
+				//   "+sv_pylonvisibility 1" + Environment.NewLine);
 				File.Copy(Path.Combine(Environment.CurrentDirectory, "build.txt"), Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), true);
 				string buildfile = "SV " + (dediSlot + 1) + " - " + PIDS[pos, 0];
 				File.WriteAllText(Path.Combine(Environment.CurrentDirectory, "build.txt"), buildfile);
@@ -300,20 +301,25 @@ namespace ColombiasDediWatcher
 				string r5rArguments = "-dedi";
 				Process.Start("r5reloaded.exe", r5rArguments);
 				Thread.Sleep(10000);
-
+				File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail_BACKUP.cfg"), Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail.cfg"), true);
+				File.Copy(Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), Path.Combine(Environment.CurrentDirectory, "build.txt"), true);
 				Process[] r5rdedisnew = Process.GetProcessesByName("r5apex_ds");
 				for (int i = 0; i < ServersQt; i++)
 				{
-					if (r5rdedisnew[i].Id != Convert.ToInt16(PIDS[i, 1].Trim()));
+					int compare1 = r5rdedisnew[i].Id;
+					int compare2 = (int)Convert.ToInt64(PIDS[i, 1]);
+					if(compare1 == compare2)
+                    {
+						continue;
+                    } else
 					{
-						PIDS[pos, 1] = ((r5rdedisnew[i].Id).ToString()).Trim();
+						PIDS[pos, 1] = (r5rdedisnew[i].Id).ToString();
 						Console.Write("------------------------------------------------------------------------------------\n\n");
-						Console.Write("[!] THREAD " + dediSlot + ": NEW DEDICATED INSTANCE DETECTED.\n\n[!] THREAD " + dediSlot + ": Server name: " + gethostname + "\n\n[!] THREAD " + dediSlot + ": SAVED PID " + PIDS[i, 1] + "\n\n");
+						Console.Write("[!] THREAD " + dediSlot + ": NEW DEDICATED INSTANCE DETECTED.\n\n[!] THREAD " + dediSlot + ": Server name: " + gethostname + "\n\n[!] THREAD " + dediSlot + ": SAVED PID " + PIDS[pos, 1] + "\n\n");
 						Console.Write("------------------------------------------------------------------------------------\n");
-						File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail_BACKUP.cfg"), Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail.cfg"), true);
-						File.Copy(Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), Path.Combine(Environment.CurrentDirectory, "build.txt"), true);
+
 						Thread.Sleep(1000);
-						Thread threadx = new Thread(() => ActualWatcher(PIDS[pos, 1]));
+						Thread threadx = new Thread(() => ActualWatcher(PIDS[pos, 1], pos));
 						threadx.Start();
 						break;
 					}
