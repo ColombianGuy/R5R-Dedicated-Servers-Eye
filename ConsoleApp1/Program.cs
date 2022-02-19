@@ -8,7 +8,6 @@ namespace ColombiasDediWatcher
 {
 	//todo config file
 	//todo shuffle map array
-	//todo map unique selection for servers //DONE
 	class Program
 	{
 		public static string[,] PIDS;
@@ -19,7 +18,7 @@ namespace ColombiasDediWatcher
 		public static void Title()
 		{
 			Console.Write("\n");
-			Console.Write("-----------------------R5R DEDICATED SERVERS - MANAGEMENT TOOL v0.9------------------\n");
+			Console.Write("-----------------------R5R DEDICATED SERVERS - MANAGEMENT TOOL v1--------------------\n");
 			Console.Write("--------------------------------------By ColombiaFPS---------------------------------\n");
 		}
 		public static void Main()
@@ -29,7 +28,6 @@ namespace ColombiasDediWatcher
 			string svQt = Console.ReadLine();
 			ServersQt = Int16.Parse(svQt);
 			PIDS = new string[ServersQt,5];
-
 			//hostnames = new string[ServersQt];
 			for(int i = 0; i < ServersQt; i++)  
 			{
@@ -153,7 +151,6 @@ namespace ColombiasDediWatcher
 		{
 				Console.Write("[!] LAUNCHING " + ServersQt + " DEDICATED SERVERS...\n\n");
 				//editing the startup_dedi.cfg file so we can have different playlists.
-				//TODO: Update to startup_dedi_retail.cfg when necessary
 				File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail.cfg"), Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail_BACKUP.cfg"), true);
 
 				for (int i = 0; i < ServersQt; i++)
@@ -208,7 +205,6 @@ namespace ColombiasDediWatcher
 							}
 						Thread.Sleep(100);
 				}
-				Console.Write("----------------------------------------------------------------\n");
 		}
 		public static void ChangeLevelThread(int dediSlot)
 			{
@@ -242,16 +238,6 @@ namespace ColombiasDediWatcher
 		public static void ActualWatcher(string PID, int pos)
 		{
 			int PIDasInt = (int)Convert.ToInt64(PID);
-			//int pos = 0;
-			//for (int i = 0; i < ServersQt; ++i)
-			//{
-			//	if (PIDS[i, 1] == PID)
-			//	{
-			//		pos = i;
-			//		break;
-			//	}
-			//}
-
 			int dediSlot = pos + 1;
 			string gethostname = PIDS[pos, 0];
 			Process dediToWatch = Process.GetProcessById(PIDasInt);
@@ -259,26 +245,20 @@ namespace ColombiasDediWatcher
 			dediToWatch.EnableRaisingEvents = true;
 
 			Thread.Sleep(1000);
-			while (!dediToWatch.HasExited)
-			{
-				dediToWatch.Refresh();
-				Console.Write("[+] THREAD " + dediSlot + ": Dedicated with PID " + PID + " is up. \n");
-				Thread.Sleep(2000);
-			}
-			Thread.Sleep(1000);
+			dediToWatch.Refresh();
+			Console.Write("[+] THREAD " + dediSlot + ": Dedicated with PID " + PID + " is up. \n");
+			dediToWatch.WaitForExit();
+			Thread.Sleep(2000);
+			dediToWatch.Refresh();
 
-			if (dediToWatch.HasExited)
-			{
-				DateTime crashedtime = DateTime.Now;
+			DateTime crashedtime = DateTime.Now;
 				++num_crashes;
 				Thread.Sleep(3000);
 				Console.Write("----------------------------------------------------------------\n\n"); 
 				Console.Write("[!] THREAD " + dediSlot + ": DEDICATED WITH PID " + PID + " HAS CRASHED!\n[!] " + crashedtime + "  - Total observed crashes: " + num_crashes.ToString() + "\n[!] THREAD " + dediSlot + ": Server name: " + gethostname + "\n[!] THREAD " + dediSlot + ": CREATING NEW DEDICATED INSTANCE. \n\n");
-				Console.Write("----------------------------------------------------------------\n");
-				//File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\logs\\sqvm_print.log"), Path.Combine(Environment.CurrentDirectory, "platform\\logs\\sv" + dediSlot + "_" + "CRASH" + num_crashes + ".log"), true);
-				//Thread.Sleep(1000);
-				//File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\logs\\sqvm_print_EMPTY.log"), Path.Combine(Environment.CurrentDirectory, "platform\\logs\\sqvm_print.log"), true);
-				//Thread.Sleep(1000);
+				File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\logs\\sqvm_print.log"), Path.Combine(Environment.CurrentDirectory, "platform\\logs\\sv" + dediSlot + "_" + "CRASH" + num_crashes + ".log"), true);
+				Thread.Sleep(1000);
+
 				File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail.cfg"), Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail_BACKUP.cfg"), true);
 				Thread.Sleep(1000);
 				string DediCfg = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail_BACKUP.cfg"));
@@ -303,32 +283,49 @@ namespace ColombiasDediWatcher
 				Thread.Sleep(10000);
 				File.Copy(Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail_BACKUP.cfg"), Path.Combine(Environment.CurrentDirectory, "platform\\cfg\\startup_dedi_retail.cfg"), true);
 				File.Copy(Path.Combine(Environment.CurrentDirectory, "build_BACKUP.txt"), Path.Combine(Environment.CurrentDirectory, "build.txt"), true);
-				Process[] r5rdedisnew = Process.GetProcessesByName("r5apex_ds");
-				for (int i = 0; i < ServersQt; i++)
-				{
-					int compare1 = r5rdedisnew[i].Id;
-					int compare2 = (int)Convert.ToInt64(PIDS[i, 1]);
-					if(compare1 == compare2)
-                    {
-						continue;
-                    } else
-					{
-						PIDS[pos, 1] = (r5rdedisnew[i].Id).ToString();
-						Console.Write("------------------------------------------------------------------------------------\n\n");
-						Console.Write("[!] THREAD " + dediSlot + ": NEW DEDICATED INSTANCE DETECTED.\n\n[!] THREAD " + dediSlot + ": Server name: " + gethostname + "\n\n[!] THREAD " + dediSlot + ": SAVED PID " + PIDS[pos, 1] + "\n\n");
-						Console.Write("------------------------------------------------------------------------------------\n");
+				Process[] r5rdedisnew0 = Process.GetProcessesByName("r5apex_ds");
 
-						Thread.Sleep(1000);
-						Thread threadx = new Thread(() => ActualWatcher(PIDS[pos, 1], pos));
-						threadx.Start();
-						break;
-					}
-
+				foreach(Process P in r5rdedisnew0)
+			    {
+				P.Refresh();
+				Thread.Sleep(1000);
 				}
 
-			}
+			Process[] r5rdedisnew = Process.GetProcessesByName("r5apex_ds");
 
+			for (int i = 0; i < ServersQt; i++)
+				{
+					bool ignorethisprocess = false;
 
-			}
+						for (int j = 0; j < ServersQt; j++)
+						{
+							int compare1 = r5rdedisnew[i].Id;
+							int compare2 = (int)Convert.ToInt64(PIDS[j, 1]);
+
+							if (compare1 == compare2)
+							{
+								ignorethisprocess = true;
+								break;
+							} else
+							{
+								continue;
+							}
+						}
+					if (ignorethisprocess == true) { continue; }
+					else
+					{
+
+					PIDS[pos, 1] = (r5rdedisnew[i].Id).ToString();
+					Console.Write("[!] THREAD " + dediSlot + ": NEW DEDICATED INSTANCE DETECTED.\n\n[!] THREAD " + dediSlot + ": Server name: " + gethostname + "\n\n[!] THREAD " + dediSlot + ": SAVED PID " + PIDS[pos, 1] + "\n\n");
+					Console.Write("------------------------------------------------------------------------------------\n");
+
+					Thread.Sleep(1000);
+					Thread threadx = new Thread(() => ActualWatcher(PIDS[pos, 1], pos));
+					threadx.Start();
+					break;
+					}
+				}
+
+		}
 	}
 }
